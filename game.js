@@ -282,6 +282,7 @@ function moveDown(piece){
 		piece.d.y++;
 		drawPiece(piece);
 	}
+	pieceAtBottom(piece)
 }
 
 function outofBoundsCheck(piece){
@@ -320,6 +321,23 @@ function generateRandomPiece(){
 	return randomItem;
 }
 
+function pieceAtBottom(piece){
+	if(piece.a.y >= grid.length - 1 || piece.b.y  >= grid.length - 1|| piece.c.y  >= grid.length - 1|| piece.d.y >= grid.length - 1 ){
+		current_piece = new Piece(generateRandomPiece());
+		solidifyPieceOnGrid(piece);
+	}else if(grid[piece.a.y + 1][piece.a.x] != "white" || grid[piece.b.y + 1][piece.b.x] != "white"  || grid[piece.c.y + 1][piece.c.x] != "white"  || grid[piece.d.y + 1][piece.d.x] != "white"  ){
+		current_piece = new Piece(generateRandomPiece());
+		solidifyPieceOnGrid(piece);
+	}
+}
+
+function solidifyPieceOnGrid(piece){
+	grid[piece.a.y][piece.a.x] = "black";
+	grid[piece.b.y][piece.b.x] = "black";
+	grid[piece.c.y][piece.c.x] = "black";
+	grid[piece.d.y][piece.d.x] = "black";
+}
+
 
 
 
@@ -355,10 +373,8 @@ function drawGrid(){
 
 
 function drawOnGrid(y, x, color){
-	grid[y][x] = color;
 	ctx.fillStyle = color;
 	ctx.fillRect(x * gridSquareSize + 2 , y * gridSquareSize + 2, gridSquareSize -  2 , gridSquareSize - 2);
-
 	ctx.fillStyle = "white"
 }
 
