@@ -16,15 +16,75 @@ class Piece{
 	constructor(type){
 		this.piece_type = type;
 		switch(type){
+			case 0:
+				this.a.x = 0;
+				this.a.y = 0;
+				this.b.x = 1;
+				this.b.y = 0;
+				this.c.x = 0;
+				this.c.y = 1;
+				this.d.x = 1;
+				this.d.y = 1;
+				break;
 			case 1:
-				this.a.x = 5;
+				this.a.x = 0;
 				this.a.y = 1;
-				this.b.x = 5;
-				this.b.y = 2;
-				this.c.x = 5;
-				this.c.y = 3;
-				this.d.x = 5;
-				this.d.y = 4;
+				this.b.x = 1;
+				this.b.y = 1;
+				this.c.x = 2;
+				this.c.y = 1;
+				this.d.x = 3;
+				this.d.y = 1;
+				break;
+			case 2:
+				this.a.x = 0;
+				this.a.y = 1;
+				this.b.x = 1;
+				this.b.y = 0;
+				this.c.x = 2;
+				this.c.y = 1;
+				this.d.x = 1;
+				this.d.y = 1;
+				break;
+			case 6:
+				this.a.x = 1;
+				this.a.y = 0;
+				this.b.x = 2;
+				this.b.y = 0;
+				this.c.x = 0;
+				this.c.y = 1;
+				this.d.x = 1;
+				this.d.y = 1;
+				break;
+			case 4:
+				this.a.x = 1;
+				this.a.y = 1;
+				this.b.x = 2;
+				this.b.y = 1;
+				this.c.x = 2;
+				this.c.y = 2;
+				this.d.x = 3;
+				this.d.y = 2;
+				break;
+			case 5:
+				this.a.x = 0;
+				this.a.y = 0;
+				this.b.x = 1;
+				this.b.y = 0;
+				this.c.x = 2;
+				this.c.y = 0;
+				this.d.x = 0;
+				this.d.y = 1;
+				break;
+			case 3:
+				this.a.x = 0;
+				this.a.y = 0;
+				this.b.x = 0;
+				this.b.y = 1;
+				this.c.x = 1;
+				this.c.y = 1;
+				this.d.x = 2;
+				this.d.y = 1;
 				break;
 		}
 	}
@@ -43,25 +103,158 @@ class Piece{
 				switch(r.form){
 					case 0:
 						console.log('case 0');
-						r.a.x += 1;
-						r.a.y += 1;
-						r.c.x -= 1;
-						r.c.y -= 1;
-						r.d.x -= 2;
-						r.d.y -= 2;
+						r.a.x += 2;
+						r.a.y += -1;
+						r.b.x += 1;
+						r.b.y += 0;
+						r.c.x += 0;
+						r.c.y += 1;
+						r.d.x += -1;
+						r.d.y += 2;
 						r.form = 1;
 						break;
 					case 1:
 						console.log('case 1');
-						r.a.x -= 1;
-						r.a.y -= 1;
+						r.a.x += 1;
+						r.a.y += 2;
+						r.b.x += 0;
+						r.b.y += 1;
+						r.c.x += -1;
+						r.c.y += 0;
+						r.d.x += -2;
+						r.d.y += -1;
+						r.form = 2;
+						break;
+					case 2:
+						console.log('case 2');
+						r.a.x += -2;
+						r.a.y += 1;
+						r.b.x += -1;
+						r.b.y += 0;
+						r.c.x += 0;
+						r.c.y += -1;
+						r.d.x += 1;
+						r.d.y += -2;
+						r.form = 3;
+						break;
+					case 3:
+						console.log('case 3');
+						r.a.x += -1;
+						r.a.y += -2;
+						r.b.x += 0;
+						r.b.y += -1;
 						r.c.x += 1;
-						r.c.y += 1;
+						r.c.y += 0;
 						r.d.x += 2;
-						r.d.y += 2;
-						r.form = 0
+						r.d.y += 1;
+						r.form = 0;
 						break;
 				}
+				break;
+			case 2:
+				switch(r.form){
+					case 0:
+						console.log('case 0');
+						r.a.x += 1;
+						r.a.y += -1;
+						r.b.x += 1;
+						r.b.y += 1;
+						r.c.x += -1;
+						r.c.y += 1;
+						r.d.x += 0;
+						r.d.y += 0;
+						r.form = 1;
+						break;
+					case 1:
+						console.log('case 1');
+						r.a.x += 1;
+						r.a.y += 1;
+						r.b.x += -1;
+						r.b.y += 1;
+						r.c.x += -1;
+						r.c.y += -1;
+						r.d.x += 0;
+						r.d.y += 0;
+						r.form = 2;
+						break;
+					case 2:
+						console.log('case 2');
+						r.a.x += -1;
+						r.a.y += 1;
+						r.b.x += -1;
+						r.b.y += -1;
+						r.c.x += 1;
+						r.c.y += -1;
+						r.d.x += 0;
+						r.d.y += 0;
+						r.form = 3;
+						break;
+					case 3:
+						console.log('case 3');
+						r.a.x += -1;
+						r.a.y += -1;
+						r.b.x += 1;
+						r.b.y += -1;
+						r.c.x += 1;
+						r.c.y += 1;
+						r.d.x += 0;
+						r.d.y += 0;
+						r.form = 0;
+						break;
+				}
+				break;
+			case 3:
+				switch(r.form){
+					case 0:
+						console.log('case 0');
+						r.a.x += 2;
+						r.a.y += 0;
+						r.b.x += 1;
+						r.b.y += -1;
+						r.c.x += -0;
+						r.c.y += 0;
+						r.d.x += -1;
+						r.d.y += 1;
+						r.form = 1;
+						break;
+					case 1:
+						console.log('case 1');
+						r.a.x += 0;
+						r.a.y += 2;
+						r.b.x += 1;
+						r.b.y += 1;
+						r.c.x += 0;
+						r.c.y += 0;
+						r.d.x += -1;
+						r.d.y += -1;
+						r.form = 2;
+						break;
+					case 2:
+						console.log('case 2');
+						r.a.x += -2;
+						r.a.y += 0;
+						r.b.x += -1;
+						r.b.y += 1;
+						r.c.x += 0;
+						r.c.y += 0;
+						r.d.x += 1;
+						r.d.y += -1;
+						r.form = 3;
+						break;
+					case 3:
+						console.log('case 3');
+						r.a.x += 0;
+						r.a.y += -2;
+						r.b.x += -1;
+						r.b.y += -1;
+						r.c.x += 0;
+						r.c.y += 0;
+						r.d.x += 1;
+						r.d.y += 1;
+						r.form = 0;
+						break;
+				}
+				break;
 		}
 		console.log(r);
 		return r;
@@ -75,7 +268,7 @@ const gridSquareSize = 25;
 var grid = (new Array(24)).fill().map(function(){ return new Array(10).fill("white");});
 
 fitToContainer(canvas);
-let current_piece = new Piece(1);
+let current_piece = new Piece(3);
 
 window.addEventListener('keydown',this.check,false);
 
@@ -102,6 +295,7 @@ function moveLeft(piece){
 		piece.d.x--;
 		drawPiece(piece);
 	}
+	
 
 }
 
@@ -196,6 +390,7 @@ function drawOnGrid(y, x, color){
 	grid[y][x] = color;
 	ctx.fillStyle = color;
 	ctx.fillRect(x * gridSquareSize + 2 , y * gridSquareSize + 2, gridSquareSize -  2 , gridSquareSize - 2);
+
 	ctx.fillStyle = "white"
 }
 
