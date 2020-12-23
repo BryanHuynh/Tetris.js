@@ -17,76 +17,49 @@ class Piece{
 		this.piece_type = type;
 		switch(type){
 			case 0:
-				this.a.x = 0;
-				this.a.y = 0;
-				this.b.x = 1;
-				this.b.y = 0;
-				this.c.x = 0;
-				this.c.y = 1;
-				this.d.x = 1;
-				this.d.y = 1;
+				this.assignPosition(0,0,1,0,0,1,1,1);
 				break;
 			case 1:
-				this.a.x = 0;
-				this.a.y = 1;
-				this.b.x = 1;
-				this.b.y = 1;
-				this.c.x = 2;
-				this.c.y = 1;
-				this.d.x = 3;
-				this.d.y = 1;
+				this.assignPosition(0,1,1,1,2,1,3,1);
 				break;
 			case 2:
-				this.a.x = 0;
-				this.a.y = 1;
-				this.b.x = 1;
-				this.b.y = 0;
-				this.c.x = 2;
-				this.c.y = 1;
-				this.d.x = 1;
-				this.d.y = 1;
-				break;
-			case 6:
-				this.a.x = 1;
-				this.a.y = 0;
-				this.b.x = 2;
-				this.b.y = 0;
-				this.c.x = 0;
-				this.c.y = 1;
-				this.d.x = 1;
-				this.d.y = 1;
+				this.assignPosition(0,1,1,0,2,1,1,1);
 				break;
 			case 4:
-				this.a.x = 1;
-				this.a.y = 1;
-				this.b.x = 2;
-				this.b.y = 1;
-				this.c.x = 2;
-				this.c.y = 2;
-				this.d.x = 3;
-				this.d.y = 2;
+				this.assignPosition(0,1,1,1,1,0,2,0);
+				break;
+			case 6:
+				this.assignPosition(0,0,1,0,1,1,2,1);
 				break;
 			case 5:
-				this.a.x = 0;
-				this.a.y = 0;
-				this.b.x = 1;
-				this.b.y = 0;
-				this.c.x = 2;
-				this.c.y = 0;
-				this.d.x = 0;
-				this.d.y = 1;
+				this.assignPosition(0,1,1,1,2,1,2,0);
 				break;
 			case 3:
-				this.a.x = 0;
-				this.a.y = 0;
-				this.b.x = 0;
-				this.b.y = 1;
-				this.c.x = 1;
-				this.c.y = 1;
-				this.d.x = 2;
-				this.d.y = 1;
+				this.assignPosition(0,0,0,1,1,1,2,1);
 				break;
 		}
+	}
+
+	assignPosition(ax,ay,bx,by,cx,cy,dx,dy){
+		this.a.x = ax;
+		this.a.y = ay;
+		this.b.x = bx;
+		this.b.y = by;
+		this.c.x = cx;
+		this.c.y = cy;
+		this.d.x = dx;
+		this.d.y = dy;
+	}
+
+	translate(piece, ax,ay,bx,by,cx,cy,dx,dy){
+		piece.a.x += ax;
+		piece.a.y += ay;
+		piece.b.x += bx;
+		piece.b.y += by;
+		piece.c.x += cx;
+		piece.c.y += cy;
+		piece.d.x += dx;
+		piece.d.y += dy;
 	}
 
 
@@ -103,50 +76,22 @@ class Piece{
 				switch(r.form){
 					case 0:
 						console.log('case 0');
-						r.a.x += 2;
-						r.a.y += -1;
-						r.b.x += 1;
-						r.b.y += 0;
-						r.c.x += 0;
-						r.c.y += 1;
-						r.d.x += -1;
-						r.d.y += 2;
+						this.translate(r,2,-1,1,0,0,1,-1,2);
 						r.form = 1;
 						break;
 					case 1:
 						console.log('case 1');
-						r.a.x += 1;
-						r.a.y += 2;
-						r.b.x += 0;
-						r.b.y += 1;
-						r.c.x += -1;
-						r.c.y += 0;
-						r.d.x += -2;
-						r.d.y += -1;
+						this.translate(r,1,2,0,1,-1,0,-2,-1);
 						r.form = 2;
 						break;
 					case 2:
 						console.log('case 2');
-						r.a.x += -2;
-						r.a.y += 1;
-						r.b.x += -1;
-						r.b.y += 0;
-						r.c.x += 0;
-						r.c.y += -1;
-						r.d.x += 1;
-						r.d.y += -2;
+						this.translate(r,-2,1,-1,0,0,-1,1,-2);
 						r.form = 3;
 						break;
 					case 3:
 						console.log('case 3');
-						r.a.x += -1;
-						r.a.y += -2;
-						r.b.x += 0;
-						r.b.y += -1;
-						r.c.x += 1;
-						r.c.y += 0;
-						r.d.x += 2;
-						r.d.y += 1;
+						this.translate(r,-1,-2,0,-1,1,0,2,1);
 						r.form = 0;
 						break;
 				}
@@ -155,50 +100,22 @@ class Piece{
 				switch(r.form){
 					case 0:
 						console.log('case 0');
-						r.a.x += 1;
-						r.a.y += -1;
-						r.b.x += 1;
-						r.b.y += 1;
-						r.c.x += -1;
-						r.c.y += 1;
-						r.d.x += 0;
-						r.d.y += 0;
+						this.translate(r,1,-1,1,1,-1,1,0,0,1);
 						r.form = 1;
 						break;
 					case 1:
 						console.log('case 1');
-						r.a.x += 1;
-						r.a.y += 1;
-						r.b.x += -1;
-						r.b.y += 1;
-						r.c.x += -1;
-						r.c.y += -1;
-						r.d.x += 0;
-						r.d.y += 0;
+						this.translate(r,1,1,-1,1,-1,-1,0,0);
 						r.form = 2;
 						break;
 					case 2:
 						console.log('case 2');
-						r.a.x += -1;
-						r.a.y += 1;
-						r.b.x += -1;
-						r.b.y += -1;
-						r.c.x += 1;
-						r.c.y += -1;
-						r.d.x += 0;
-						r.d.y += 0;
+						this.translate(r,-1,1,-1,-1,1,-1,0,0)
 						r.form = 3;
 						break;
 					case 3:
 						console.log('case 3');
-						r.a.x += -1;
-						r.a.y += -1;
-						r.b.x += 1;
-						r.b.y += -1;
-						r.c.x += 1;
-						r.c.y += 1;
-						r.d.x += 0;
-						r.d.y += 0;
+						this.translate(r,-1,-1,1,-1,1,1,0,0);
 						r.form = 0;
 						break;
 				}
@@ -207,54 +124,99 @@ class Piece{
 				switch(r.form){
 					case 0:
 						console.log('case 0');
-						r.a.x += 2;
-						r.a.y += 0;
-						r.b.x += 1;
-						r.b.y += -1;
-						r.c.x += -0;
-						r.c.y += 0;
-						r.d.x += -1;
-						r.d.y += 1;
+						this.translate(r,2,0,1,-1,0,0,-1,1);
 						r.form = 1;
 						break;
 					case 1:
 						console.log('case 1');
-						r.a.x += 0;
-						r.a.y += 2;
-						r.b.x += 1;
-						r.b.y += 1;
-						r.c.x += 0;
-						r.c.y += 0;
-						r.d.x += -1;
-						r.d.y += -1;
+						this.translate(r,0,2,1,1,0,0,-1,-1);
 						r.form = 2;
 						break;
 					case 2:
 						console.log('case 2');
-						r.a.x += -2;
-						r.a.y += 0;
-						r.b.x += -1;
-						r.b.y += 1;
-						r.c.x += 0;
-						r.c.y += 0;
-						r.d.x += 1;
-						r.d.y += -1;
+						this.translate(r,-2,0,-1,1,0,0,1,-1);
 						r.form = 3;
 						break;
 					case 3:
 						console.log('case 3');
-						r.a.x += 0;
-						r.a.y += -2;
-						r.b.x += -1;
-						r.b.y += -1;
-						r.c.x += 0;
-						r.c.y += 0;
-						r.d.x += 1;
-						r.d.y += 1;
+						this.translate(r,0,-2,-1,-1,0,0,1,1);
 						r.form = 0;
 						break;
 				}
 				break;
+			case 4:
+				switch(r.form){
+					case 0:
+						console.log('case 0');
+						this.translate(r,1,-1,0,0,1,1,0,2);
+						r.form = 1;
+						break;
+					case 1:
+						console.log('case 1');
+						this.translate(r,1,1,0,0,-1,1,-2,0);
+						r.form = 2;
+						break;
+					case 2:
+						console.log('case 2');
+						this.translate(r,-1,1,0,0,-1,-1,0,-2);
+						r.form = 3;
+						break;
+					case 3:
+						console.log('case 3');
+						this.translate(r,-1,-1,0,0,1,-1,2,0);
+						r.form = 0;
+						break;
+				}
+				break;
+			case 5:
+				switch(r.form){
+					case 0:
+						console.log('case 0');
+						this.translate(r,1,-1,0,0,-1,1,0,2);
+						r.form = 1;
+						break;
+					case 1:
+						console.log('case 1');
+						this.translate(r,1,1,0,0,-1,-1,-2,0);
+						r.form = 2;
+						break;
+					case 2:
+						console.log('case 2');
+						this.translate(r,-1,1,0,0,1,-1,0,-2);
+						r.form = 3;
+						break;
+					case 3:
+						console.log('case 3');
+						this.translate(r,-1,-1,0,0,1,1,2,0);
+						r.form = 0;
+						break;
+				}
+				break;
+			case 6:
+				switch(r.form){
+					case 0:
+						console.log('case 0');
+						this.translate(r,2,0,1,1,0,0,-1,1);
+						r.form = 1;
+						break;
+					case 1:
+						console.log('case 1');
+						this.translate(r,0,2,-1,1,0,0,-1,-1);
+						r.form = 2;
+						break;
+					case 2:
+						console.log('case 2');
+						this.translate(r,-2,0,-1,-1,0,0,1,-1);
+						r.form = 3;
+						break;
+					case 3:
+						console.log('case 3');
+						this.translate(r,0,-2,1,-1,0,0,1,1);
+						r.form = 0;
+						break;
+				}
+				break;
+				
 		}
 		console.log(r);
 		return r;
@@ -268,7 +230,7 @@ const gridSquareSize = 25;
 var grid = (new Array(24)).fill().map(function(){ return new Array(10).fill("white");});
 
 fitToContainer(canvas);
-let current_piece = new Piece(3);
+let current_piece = new Piece(generateRandomPiece());
 
 window.addEventListener('keydown',this.check,false);
 
@@ -350,6 +312,12 @@ function clearPiece(piece){
 	clearSquare(piece.b.y, piece.b.x);
 	clearSquare(piece.c.y, piece.c.x);
 	clearSquare(piece.d.y, piece.d.x);
+}
+
+function generateRandomPiece(){
+	pieces = [0,1,2,3,4,5,6];
+	var randomItem = pieces[Math.floor(Math.random()*pieces.length)];
+	return randomItem;
 }
 
 
