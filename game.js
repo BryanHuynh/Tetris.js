@@ -3,6 +3,11 @@ class PieceComponent{
 	constructor(y,x){
 		this.y = y;
 		this.x = x;
+
+	}
+
+	setColor(c){
+		this.color = c;
 	}
 }
 
@@ -18,26 +23,40 @@ class Piece{
 		switch(type){
 			case 0:
 				this.assignPosition(0,0,1,0,0,1,1,1);
+				this.setPieceColor('Gold');
 				break;
 			case 1:
 				this.assignPosition(0,1,1,1,2,1,3,1);
+				this.setPieceColor('aqua');
 				break;
 			case 2:
 				this.assignPosition(0,1,1,0,2,1,1,1);
+				this.setPieceColor('BlueViolet');
 				break;
 			case 4:
 				this.assignPosition(0,1,1,1,1,0,2,0);
+				this.setPieceColor('DarkBlue');
 				break;
 			case 6:
 				this.assignPosition(0,0,1,0,1,1,2,1);
+				this.setPieceColor('Chartreuse');
 				break;
 			case 5:
 				this.assignPosition(0,1,1,1,2,1,2,0);
+				this.setPieceColor('DarkOrange');
 				break;
 			case 3:
 				this.assignPosition(0,0,0,1,1,1,2,1);
+				this.setPieceColor('Crimson');
 				break;
 		}
+	}
+
+	setPieceColor(color){
+		this.a.setColor(color);
+		this.b.setColor(color);
+		this.c.setColor(color);
+		this.d.setColor(color);
 	}
 
 	assignPosition(ax,ay,bx,by,cx,cy,dx,dy){
