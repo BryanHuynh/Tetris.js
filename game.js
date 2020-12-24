@@ -246,8 +246,7 @@ class Piece{
 var canvas = document.querySelector('canvas'),
     ctx    = canvas.getContext('2d');
 const gridSquareSize = 25;
-let grid = (new Array(24)).fill().map(function(){ return new Array(10).fill(0);});
-let colorGrid = (new Array(24)).fill().map(function(){ return new Array(10).fill("white");});
+let grid = (new Array(24)).fill().map(function(){ return new Array(10).fill("white");});
 fitToContainer(canvas);
 let current_piece = new Piece(generateRandomPiece());
 
@@ -259,12 +258,17 @@ function check(e) {
         case 37: moveLeft(current_piece); break; //Left key
         case 38: rotate(current_piece); break; //Up key
         case 39: moveRight(current_piece); break; //Right key
-        case 40: moveDown(current_piece); break; //Down key
+		case 40: moveDown(current_piece); break; //Down key
+		case 32: drop(current_piece); break;
     }
 }
 function clearSquare(y, x){
 	const context = canvas.getContext('2d');
 	context.clearRect(x * gridSquareSize+2, y * gridSquareSize+2, gridSquareSize-2 , gridSquareSize-2);
+}
+
+function drop(piece){
+	while(!moveDown(piece));
 }
 
 function moveLeft(piece){
@@ -293,7 +297,8 @@ function moveRight(piece){
 }
 
 function moveDown(piece){
-	if(piece.a.y + 1 < grid.length && piece.b.y + 1 < grid.length && piece.c.y + 1 < grid.length && piece.d.y + 1 < grid.length ){
+	let pab = pieceAtBottom(piece);
+	if(!pab){
 		clearPiece(piece);
 		piece.a.y++;
 		piece.b.y++;
@@ -301,7 +306,27 @@ function moveDown(piece){
 		piece.d.y++;
 		drawPiece(piece);
 	}
-	pieceAtBottom(piece)
+	return pab;
+}
+
+function pieceAtBottom(piece){
+	let stopped = false;
+	if(piece.a.y >= grid.length - 1 || piece.b.y  >= grid.length - 1|| piece.c.y  >= grid.length - 1|| piece.d.y >= grid.length - 1 ){
+		newBlock(piece)
+		stopped = true;
+	}else if(grid[piece.a.y + 1][piece.a.x] != "white" || grid[piece.b.y + 1][piece.b.x] != "white"  || grid[piece.c.y + 1][piece.c.x] != "white"  || grid[piece.d.y + 1][piece.d.x] != "white"  ){
+		newBlock(piece);
+		stopped = true;
+	}
+	let fullLines = didPieceFullLine(piece);
+	console.log("full lines:", fullLines);
+	if(fullLines != -1){
+		console.log(fullLines);
+		for(let i = 0; i < fullLines.length; i++){
+			clearLine(fullLines[i]);
+		}
+	}
+	return stopped;
 }
 
 function outofBoundsCheck(piece){
@@ -340,30 +365,21 @@ function generateRandomPiece(){
 	return randomItem;
 }
 
-function pieceAtBottom(piece){
-	if(piece.a.y >= grid.length - 1 || piece.b.y  >= grid.length - 1|| piece.c.y  >= grid.length - 1|| piece.d.y >= grid.length - 1 ){
-		current_piece = new Piece(generateRandomPiece());
-		solidifyPieceOnGrid(piece);
 
-	}else if(grid[piece.a.y + 1][piece.a.x] != 0 || grid[piece.b.y + 1][piece.b.x] != 0  || grid[piece.c.y + 1][piece.c.x] != 0  || grid[piece.d.y + 1][piece.d.x] != 0  ){
-		current_piece = new Piece(generateRandomPiece());
-		solidifyPieceOnGrid(piece);
-	}
-	let fullLines = didPieceFullLine(piece);
-	if(fullLines != -1){
-		console.log(fullLines);
-		for(let i = 0; i < fullLines.length; i++){
-			clearLine(fullLines[i]);
-		}
+
+function newBlock(piece){
+	current_piece = new Piece(generateRandomPiece());
+	solidifyPieceOnGrid(piece);
+	for(let i = 0; i < (grid[0].length / 2) - 2 ; i++){
+		moveRight(current_piece);
 	}
 }
 
 function solidifyPieceOnGrid(piece){
-	grid[piece.a.y][piece.a.x] = 1;
-	grid[piece.b.y][piece.b.x] = 1;
-	grid[piece.c.y][piece.c.x] = 1;
-	grid[piece.d.y][piece.d.x] = 1;
-	
+	grid[piece.a.y][piece.a.x] = piece.a.color;
+	grid[piece.b.y][piece.b.x] = piece.b.color;
+	grid[piece.c.y][piece.c.x] = piece.c.color;
+	grid[piece.d.y][piece.d.x] = piece.d.color;
 
 }
 
@@ -386,25 +402,27 @@ function removeDuplicates(array) {
 
 function clearLine(line){
 	console.log(line);
-	for(let i = 0; i < grid[0].length; i++){
-		clearSquare(line, i);
-		grid[line][i] = 0;
+	for(let y = 0; y < grid.length; y++){
+		for(let x = 0;  x < grid[0].length; x++){
+			clearSquare(y,x);
+		}
 	}
 	shiftBlocksAboveDown(line)
+	redrawGrid();
 }
 
 function shiftBlocksAboveDown(line){
 	let bottom = grid.slice(line + 1);
 	grid.splice(line);
 	grid = grid.concat(bottom);
-	grid.unshift([0,0,0,0,0,0,0,0,0,0]);
+	grid.unshift(["white","white","white","white","white","white","white","white","white","white"]);
 	console.log(grid);
 }
 
 
 function isLineFull(line){
 	for(let i = 0; i < grid[0].length; i++){
-		if(grid[line][i] != 1){
+		if(grid[line][i] == "white"){
 			return false;
 		}
 	}
@@ -438,6 +456,14 @@ function drawGrid(){
 		for(var x = 0; x < grid[0].length; x++){
 			ctx.strokeRect(x * gridSquareSize + 2 , y * gridSquareSize + 2, gridSquareSize -  2 , gridSquareSize - 2);
 			clearSquare(y,x);
+		}
+	}
+}
+
+function redrawGrid(){
+	for(var y = 0; y < grid.length; y++){
+		for(var x = 0; x < grid[0].length; x++){
+			drawOnGrid(y,x,grid[y][x]);
 		}
 	}
 }
