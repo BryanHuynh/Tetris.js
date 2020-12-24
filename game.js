@@ -1,5 +1,5 @@
 class PieceComponent{
-	color = "black";
+	color = 1;
 	constructor(y,x){
 		this.y = y;
 		this.x = x;
@@ -246,8 +246,8 @@ class Piece{
 var canvas = document.querySelector('canvas'),
     ctx    = canvas.getContext('2d');
 const gridSquareSize = 25;
-var grid = (new Array(24)).fill().map(function(){ return new Array(10).fill("white");});
-
+let grid = (new Array(24)).fill().map(function(){ return new Array(10).fill(0);});
+let colorGrid = (new Array(24)).fill().map(function(){ return new Array(10).fill("white");});
 fitToContainer(canvas);
 let current_piece = new Piece(generateRandomPiece());
 
@@ -344,17 +344,71 @@ function pieceAtBottom(piece){
 	if(piece.a.y >= grid.length - 1 || piece.b.y  >= grid.length - 1|| piece.c.y  >= grid.length - 1|| piece.d.y >= grid.length - 1 ){
 		current_piece = new Piece(generateRandomPiece());
 		solidifyPieceOnGrid(piece);
-	}else if(grid[piece.a.y + 1][piece.a.x] != "white" || grid[piece.b.y + 1][piece.b.x] != "white"  || grid[piece.c.y + 1][piece.c.x] != "white"  || grid[piece.d.y + 1][piece.d.x] != "white"  ){
+
+	}else if(grid[piece.a.y + 1][piece.a.x] != 0 || grid[piece.b.y + 1][piece.b.x] != 0  || grid[piece.c.y + 1][piece.c.x] != 0  || grid[piece.d.y + 1][piece.d.x] != 0  ){
 		current_piece = new Piece(generateRandomPiece());
 		solidifyPieceOnGrid(piece);
+	}
+	let fullLines = didPieceFullLine(piece);
+	if(fullLines != -1){
+		console.log(fullLines);
+		for(let i = 0; i < fullLines.length; i++){
+			clearLine(fullLines[i]);
+		}
 	}
 }
 
 function solidifyPieceOnGrid(piece){
-	grid[piece.a.y][piece.a.x] = "black";
-	grid[piece.b.y][piece.b.x] = "black";
-	grid[piece.c.y][piece.c.x] = "black";
-	grid[piece.d.y][piece.d.x] = "black";
+	grid[piece.a.y][piece.a.x] = 1;
+	grid[piece.b.y][piece.b.x] = 1;
+	grid[piece.c.y][piece.c.x] = 1;
+	grid[piece.d.y][piece.d.x] = 1;
+	
+
+}
+
+function didPieceFullLine(piece){
+	lines = [];
+	if(isLineFull(piece.a.y)) lines.push(piece.a.y);
+	if(isLineFull(piece.b.y)) lines.push(piece.b.y);
+	if(isLineFull(piece.c.y)) lines.push(piece.c.y);
+	if(isLineFull(piece.d.y)) lines.push(piece.d.y);
+	if(lines.length > 0){
+		return removeDuplicates(lines);
+	}
+	return -1;
+}
+
+function removeDuplicates(array) {
+	return array.filter((a, b) => array.indexOf(a) === b)
+  };
+
+
+function clearLine(line){
+	console.log(line);
+	for(let i = 0; i < grid[0].length; i++){
+		clearSquare(line, i);
+		grid[line][i] = 0;
+	}
+	shiftBlocksAboveDown(line)
+}
+
+function shiftBlocksAboveDown(line){
+	let bottom = grid.slice(line + 1);
+	grid.splice(line);
+	grid = grid.concat(bottom);
+	grid.unshift([0,0,0,0,0,0,0,0,0,0]);
+	console.log(grid);
+}
+
+
+function isLineFull(line){
+	for(let i = 0; i < grid[0].length; i++){
+		if(grid[line][i] != 1){
+			return false;
+		}
+	}
+	return true;
 }
 
 
@@ -375,9 +429,8 @@ function drawPiece(piece){
 
 
 function fitToContainer(canvas){
-  canvas.style.width='50%';
-  canvas.width  = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
+  canvas.width  = gridSquareSize * grid[0].length + 5;
+  canvas.height = gridSquareSize * grid.length + 5;
 }
 
 function drawGrid(){
@@ -389,13 +442,13 @@ function drawGrid(){
 	}
 }
 
-
-
 function drawOnGrid(y, x, color){
 	ctx.fillStyle = color;
 	ctx.fillRect(x * gridSquareSize + 2 , y * gridSquareSize + 2, gridSquareSize -  2 , gridSquareSize - 2);
-	ctx.fillStyle = "white"
+	ctx.fillStyle = 0;
 }
+
+
 
 
 
