@@ -235,7 +235,7 @@ class Piece{
 						break;
 				}
 				break;
-				
+
 		}
 		console.log(r);
 		return r;
@@ -273,25 +273,32 @@ function drop(piece){
 
 function moveLeft(piece){
 	if(piece.a.x - 1 >= 0 && piece.b.x - 1 >= 0 && piece.c.x - 1 >= 0 && piece.d.x - 1 >= 0 ){
-		clearPiece(piece);
-		piece.a.x--;
-		piece.b.x--;
-		piece.c.x--;
-		piece.d.x--;
-		drawPiece(piece);
+		if(!containsPiece(piece.a.y, piece.a.x - 1) && !containsPiece(piece.b.y, piece.b.x - 1) && !containsPiece(piece.c.y, piece.c.x - 1) && !containsPiece(piece.d.y, piece.d.x - 1)){
+			clearPiece(piece);
+			piece.a.x--;
+			piece.b.x--;
+			piece.c.x--;
+			piece.d.x--;
+			drawPiece(piece);
+		}
 	}
-	
+}
 
+function containsPiece(y,x){
+	if(grid[y][x] == "white") return false;
+	return true;
 }
 
 function moveRight(piece){
 	if(piece.a.x + 1 < grid[0].length && piece.b.x + 1 < grid[0].length && piece.c.x + 1 < grid[0].length && piece.d.x + 1 < grid[0].length ){
-		clearPiece(piece);
-		piece.a.x++;
-		piece.b.x++;
-		piece.c.x++;
-		piece.d.x++;
-		drawPiece(piece);
+		if(!containsPiece(piece.a.y, piece.a.x + 1) && !containsPiece(piece.b.y, piece.b.x + 1) && !containsPiece(piece.c.y, piece.c.x + 1) && !containsPiece(piece.d.y, piece.d.x + 1)){
+			clearPiece(piece);
+			piece.a.x++;
+			piece.b.x++;
+			piece.c.x++;
+			piece.d.x++;
+			drawPiece(piece);
+		}
 	}
 
 }
@@ -306,27 +313,33 @@ function moveDown(piece){
 		piece.d.y++;
 		drawPiece(piece);
 	}
+
+	if(pab){
+			newBlock(piece)
+	}
+	clearFullLines();
+	drawPiece(current_piece);
 	return pab;
 }
 
 function pieceAtBottom(piece){
 	let stopped = false;
 	if(piece.a.y >= grid.length - 1 || piece.b.y  >= grid.length - 1|| piece.c.y  >= grid.length - 1|| piece.d.y >= grid.length - 1 ){
-		newBlock(piece)
 		stopped = true;
 	}else if(grid[piece.a.y + 1][piece.a.x] != "white" || grid[piece.b.y + 1][piece.b.x] != "white"  || grid[piece.c.y + 1][piece.c.x] != "white"  || grid[piece.d.y + 1][piece.d.x] != "white"  ){
-		newBlock(piece);
 		stopped = true;
 	}
-	let fullLines = didPieceFullLine(piece);
+	return stopped;
+}
+
+function clearFullLines(){
+	let fullLines = findFullLines();
 	console.log("full lines:", fullLines);
 	if(fullLines != -1){
-		console.log(fullLines);
 		for(let i = 0; i < fullLines.length; i++){
 			clearLine(fullLines[i]);
 		}
 	}
-	return stopped;
 }
 
 function outofBoundsCheck(piece){
@@ -373,6 +386,7 @@ function newBlock(piece){
 	for(let i = 0; i < (grid[0].length / 2) - 2 ; i++){
 		moveRight(current_piece);
 	}
+	drawPiece(piece);
 }
 
 function solidifyPieceOnGrid(piece){
@@ -383,12 +397,11 @@ function solidifyPieceOnGrid(piece){
 
 }
 
-function didPieceFullLine(piece){
+function findFullLines(){
 	lines = [];
-	if(isLineFull(piece.a.y)) lines.push(piece.a.y);
-	if(isLineFull(piece.b.y)) lines.push(piece.b.y);
-	if(isLineFull(piece.c.y)) lines.push(piece.c.y);
-	if(isLineFull(piece.d.y)) lines.push(piece.d.y);
+	for(let y = 0; y < grid.length; y++){
+		if(isLineFull(y)){ lines.push(y)}
+	}
 	if(lines.length > 0){
 		return removeDuplicates(lines);
 	}
